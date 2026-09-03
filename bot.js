@@ -33,10 +33,6 @@ const pool = new Pool({
 
 const FREE_LIMIT = 10;
 
-// =========================
-// DATABASE
-// =========================
-
 async function initDatabase() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
@@ -91,10 +87,6 @@ async function saveUser(user) {
   );
 }
 
-// =========================
-// MENU
-// =========================
-
 function mainMenu() {
   return Markup.inlineKeyboard([
     [
@@ -115,10 +107,6 @@ function mainMenu() {
     ]
   ]);
 }
-
-// =========================
-// AI
-// =========================
 
 async function askAI(user, text) {
   if (!user.history) {
@@ -147,8 +135,7 @@ async function askAI(user, text) {
         messages: [
           {
             role: 'system',
-            content:
-              'Ты Kiril AI. Ты дружелюбный и полезный AI-помощник. Отвечай понятно и качественно. Если пользователь пишет на русском, отвечай на русском языке.'
+            content: 'Ты Kiril AI. Ты дружелюбный и полезный AI-помощник. Отвечай понятно и качественно. Если пользователь пишет на русском, отвечай на русском языке.'
           },
           ...user.history
         ]
@@ -180,50 +167,20 @@ async function askAI(user, text) {
   return answer;
 }
 
-// =========================
-// START
-// =========================
-
 bot.start(async (ctx) => {
   const user = await getUser(ctx);
 
   await ctx.reply(
-    `🤖 Добро пожаловать в Kiril AI!\n\n` +
-    `Твой умный AI-помощник.\n\n` +
-    `💬 Задавай вопросы\n` +
-    `🧠 Получай ответы\n` +
-    `⭐ Используй PRO для расширенных возможностей`,
-
-await initDatabase();
-
-    await bot.launch();
-
-    console.log('🤖 Kiril AI запущен!');
-  } catch (error) {
-    console.error('❌ Ошибка запуска:', error);
-    process.exit(1);
-  }
-}
-
-startBot();
-
-process.once('SIGINT', () => {
-  bot.stop('SIGINT');
-});
-
-process.once('SIGTERM', () => {
-  bot.stop('SIGTERM');
-});
-
-mainMenu()
+    '🤖 Добро пожаловать в Kiril AI!\n\n' +
+    'Твой умный AI-помощник.\n\n' +
+    '💬 Задавай вопросы\n' +
+    '🧠 Получай ответы\n' +
+    '⭐ Используй PRO для расширенных возможностей',
+    mainMenu()
   );
 
   await saveUser(user);
 });
-
-// =========================
-// ASK
-// =========================
 
 bot.action('ask', async (ctx) => {
   await ctx.answerCbQuery();
@@ -233,29 +190,23 @@ bot.action('ask', async (ctx) => {
   );
 });
 
-// =========================
-// PROFILE
-// =========================
-
 bot.action('profile', async (ctx) => {
   await ctx.answerCbQuery();
 
-  const user = await getUser(ctx);
+  const user = await
+
+User(ctx);
 
   const status = user.pro ? '⭐ PRO' : '🆓 Бесплатный';
 
   await ctx.reply(
-    `👤 Твой профиль\n\n` +
+    '👤 Твой профиль\n\n' +
     `🆔 Telegram ID: ${user.telegram_id}\n` +
     `⭐ Статус: ${status}\n` +
     `💬 Запросов использовано: ${user.requests}`,
     mainMenu()
   );
 });
-
-// =========================
-// LIMIT
-// =========================
 
 bot.action('limit', async (ctx) => {
   await ctx.answerCbQuery();
@@ -264,32 +215,25 @@ bot.action('limit', async (ctx) => {
 
   if (user.pro) {
     await ctx.reply(
-      `📊 Твой лимит\n\n` +
-      `⭐ PRO\n` +
-      `♾ Без ограничений`,
+      '📊 Твой лимит\n\n' +
+      '⭐ PRO\n' +
+      '♾ Без ограничений',
       mainMenu()
     );
 
     return;
   }
 
-  const remaining = Math.max(
-    0,
-    FREE_LIMIT - user.requests
-  );
+  const remaining = Math.max(0, FREE_LIMIT - user.requests);
 
   await ctx.reply(
-    `📊 Твой лимит\n\n` +
-    `🆓 Бесплатный тариф\n` +
+    '📊 Твой лимит\n\n' +
+    '🆓 Бесплатный тариф\n' +
     `💬 Использовано: ${user.requests}/${FREE_LIMIT}\n` +
     `🔹 Осталось: ${remaining}`,
     mainMenu()
   );
 });
-
-// =========================
-// PRO
-// =========================
 
 bot.action('pro', async (ctx) => {
   await ctx.answerCbQuery();
@@ -298,8 +242,8 @@ bot.action('pro', async (ctx) => {
 
   if (user.pro) {
     await ctx.reply(
-      `⭐ У тебя уже подключён Kiril AI PRO!\n\n` +
-      `♾ Без ограничений`,
+      '⭐ У тебя уже подключён Kiril AI PRO!\n\n' +
+      '♾ Без ограничений',
       mainMenu()
     );
 
@@ -307,21 +251,17 @@ bot.action('pro', async (ctx) => {
   }
 
   await ctx.reply(
-    `⭐ Kiril AI PRO\n\n` +
-    `Получай расширенные возможности:\n\n` +
-    `♾ Без ограничений\n` +
-    `🧠 Больше возможностей AI\n` +
-    `💬 Больше запросов\n` +
-    `🚀 Приоритетная обработка\n\n` +
-    `💰 Стоимость: 99 ₽/месяц\n\n` +
-    `Оплата будет подключена позже.`,
+    '⭐ Kiril AI PRO\n\n' +
+    'Получай расширенные возможности:\n\n' +
+    '♾ Без ограничений\n' +
+    '🧠 Больше возможностей AI\n' +
+    '💬 Больше запросов\n' +
+    '🚀 Приоритетная обработка\n\n' +
+    '💰 Стоимость: 99 ₽/месяц\n\n' +
+    'Оплата будет подключена позже.',
     mainMenu()
   );
 });
-
-// =========================
-// NEW CHAT
-// =========================
 
 bot.action('new_chat', async (ctx) => {
   await ctx.answerCbQuery();
@@ -333,32 +273,25 @@ bot.action('new_chat', async (ctx) => {
   await saveUser(user);
 
   await ctx.reply(
-    '🧹 Новый диалог создан!\n\nТеперь можешь задать новый вопрос.',
+    '🧹 Новый диалог создан!\n\n' +
+    'Теперь можешь задать новый вопрос.',
     mainMenu()
   );
 });
-
-// =========================
-// HELP
-// =========================
 
 bot.action('help', async (ctx) => {
   await ctx.answerCbQuery();
 
   await ctx.reply(
-    `ℹ️ Помощь\n\n` +
-    `💬 Задать вопрос — отправить вопрос AI.\n\n` +
-    `👤 Мой профиль — информация о твоём аккаунте.\n\n` +
-    `📊 Мой лимит — посмотреть оставшиеся запросы.\n\n` +
-    `⭐ Kiril AI PRO — расширенный тариф.\n\n` +
-    `🧹 Новый диалог — очистить историю текущего диалога.`,
+    'ℹ️ Помощь\n\n' +
+    '💬 Задать вопрос — отправить вопрос AI.\n\n' +
+    '👤 Мой профиль — информация о твоём аккаунте.\n\n' +
+    '📊 Мой лимит — посмотреть оставшиеся запросы.\n\n' +
+    '⭐ Kiril AI PRO — расширенный тариф.\n\n' +
+    '🧹 Новый диалог — очистить историю текущего диалога.',
     mainMenu()
   );
 });
-
-// =========================
-// TEXT MESSAGES
-// =========================
 
 bot.on('text', async (ctx) => {
   const text = ctx.message.text;
@@ -371,9 +304,9 @@ bot.on('text', async (ctx) => {
 
   if (!user.pro && user.requests >= FREE_LIMIT) {
     await ctx.reply(
-      `❌ Бесплатный лимит закончился.\n\n` +
+      '❌ Бесплатный лимит закончился.\n\n' +
       `Ты использовал ${FREE_LIMIT}/${FREE_LIMIT} запросов.\n\n` +
-      `⭐ Подключи Kiril AI PRO за 99 ₽/месяц.`,
+      '⭐ Подключи Kiril AI PRO за 99 ₽/месяц.',
       mainMenu()
     );
 
@@ -398,16 +331,12 @@ bot.on('text', async (ctx) => {
     console.error('Ошибка AI:', error);
 
     await ctx.reply(
-      `❌ Произошла ошибка при обращении к AI.\n\n` +
-      `Попробуй ещё раз через несколько секунд.`,
+      '❌ Произошла ошибка при обращении к AI.\n\n' +
+      'Попробуй ещё раз через несколько секунд.',
       mainMenu()
     );
   }
 });
-
-// =========================
-// WEB SERVER FOR RENDER
-// =========================
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, {
@@ -421,9 +350,24 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`🌐 Web server запущен на порту ${PORT}`);
 });
 
-// =========================
-// START BOT
-// =========================
-
 async function startBot() {
   try {
+    await initDatabase();
+    await bot.launch();
+
+    console.log('🤖 Kiril AI запущен!');
+  } catch (error) {
+    console.error('❌ Ошибка запуска:', error);
+    process.exit(1);
+  }
+}
+
+startBot();
+
+process.once('SIGINT', () => {
+  bot.stop('SIGINT');
+});
+
+process.once('SIGTERM', () => {
+  bot.stop('SIGTERM');
+}); get
