@@ -182,7 +182,7 @@ bot.action('limit', async (ctx) => {
             ' запросов';
     }
 
-wait ctx.reply(
+await ctx.reply(
         '📊 *Твой лимит*\n\n' +
         `Использовано: ${user.requests}\n` +
         `Осталось: ${remaining}\n\n` +
