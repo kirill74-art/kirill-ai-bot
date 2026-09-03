@@ -1,4 +1,12 @@
-"dependencies": {
-  "pg": "^8.16.3",
-  "telegraf": "^4.16.3"
+{
+  "name": "kiril-ai-bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "pg": "^8.16.3",
+    "telegraf": "^4.16.3"
+  }
 }
