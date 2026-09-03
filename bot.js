@@ -336,4 +336,4 @@ process.once('SIGINT', () => {
 
 process.once('SIGTERM', () => {
     bot.stop('SIGTERM');
-}); a
+}); 
